@@ -17,22 +17,6 @@ public static class DataContextExtensions
 
         dataContext.Cars = cars;
     }
-    
-    public static void Save(this DataContext dataContext)
-    {
-        if (string.IsNullOrEmpty(dataContext.Path))
-        {
-            throw new ArgumentException("Path cannot be null or empty");
-        }
-        
-        var setting = new XmlWriterSettings()
-        {
-            Indent = true
-        };
-
-        using var writer = XmlWriter.Create(dataContext.Path, setting);
-        writer.WriteCarsToXml(dataContext.Cars);
-    }
 
     public static void Load(this DataContext dataContext)
     {

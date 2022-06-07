@@ -8,11 +8,14 @@ namespace Lab2.Application;
 
 public class QueryService
 {
-    private readonly XDocument _document;
+    private readonly DataContext _context;
+    private XDocument _document;
 
-    public QueryService(DataContext dataContext)
+    public QueryService(DataContext context)
     {
-        _document = XDocument.Load(dataContext.Path);
+        _context = context;
+        _document = XDocument.Load(_context.Path);
+        _context.OnChange += () => _document = XDocument.Load(_context.Path);
     }
 
     public IEnumerable<Car> GetAllCars()
