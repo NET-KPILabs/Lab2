@@ -80,8 +80,9 @@ public static class DataContextExtensions
                 var car = f.PickRandom(cars);
                 r.IssueDate = f.Date.BetweenOffset(DateTimeOffset.Now - TimeSpan.FromDays(30), DateTimeOffset.Now);
                 r.DueDate = f.Date.BetweenOffset(r.IssueDate, DateTimeOffset.Now);
-                var profit = Math.Round((r.DueDate - r.IssueDate).TotalDays * Decimal.ToDouble(car.PricePerDay), 2);
-                r.RentalPrice = (decimal) profit;
+                var coefficient = (decimal)car.IssueYear / DateTimeOffset.Now.Year;
+                var profit = (decimal)(r.DueDate - r.IssueDate).TotalDays * car.PricePerDay * coefficient;
+                r.RentalPrice = Math.Round(profit, 2);
                 car.Rentals.Add(r);
             })
             .Generate(count);
